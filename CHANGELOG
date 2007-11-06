@@ -1,0 +1,3 @@
+scagnostics 0.1.1 --------------------
+
+* silently drop missing values when calculating scagnostics 

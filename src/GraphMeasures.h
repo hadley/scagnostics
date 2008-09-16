@@ -55,10 +55,10 @@ public:
     int x,y;       // coordinate X,Y
 
     Node(int x, int y, int count, int pointID) {
-		onHull = false;
-		onMST = false;
-		isVisited = false;
-		mstDegree = 0;
+    onHull = false;
+    onMST = false;
+    isVisited = false;
+    mstDegree = 0;
 
         this->x = x;
         this->y = y;
@@ -67,17 +67,17 @@ public:
         this->pointID = pointID;
     }
 
-	bool operator == (Node p) {
-		if (x != p.x) return false;
-		if (y != p.y) return false;
-		return true;
-	}
+  bool operator == (Node p) {
+    if (x != p.x) return false;
+    if (y != p.y) return false;
+    return true;
+  }
 
-	bool operator != (Node p) { return(!(*this == p)); }
+  bool operator != (Node p) { return(!(*this == p)); }
 
-	void incDegree(int by) { mstDegree += by; }
-	int getMSTDegree() { return mstDegree; }
-	
+  void incDegree(int by) { mstDegree += by; }
+  int getMSTDegree() { return mstDegree; }
+  
     double distToNode(double px, double py) {
         double dx = px - x;
         double dy = py - y;
@@ -85,13 +85,13 @@ public:
     }
 
     void setNeighbor(Edge *neighbor);
-	
-	Edge *shortestEdge(bool mst);
+  
+  Edge *shortestEdge(bool mst);
 
-	int getMSTChildren(double cutoff, double *maxLength);
+  int getMSTChildren(double cutoff, double *maxLength);
 
-	friend class Edge;
-	friend class Triangle;
+  friend class Edge;
+  friend class Triangle;
 };
 
 class Edge {
@@ -110,33 +110,33 @@ class Edge {
     Edge *nextE; // = NULL;    // next edge in the triangle in counterclockwise
 
     Edge(Node *p1, Node *p2) {
-		invE = NULL;     // inverse edge (p2->p1)
-		nextE = NULL;    // next edge in the triangle in counterclockwise
-		nextH = NULL;    // convex hull link
-		inT = NULL;      // triangle containing this edge
+    invE = NULL;     // inverse edge (p2->p1)
+    nextE = NULL;    // next edge in the triangle in counterclockwise
+    nextH = NULL;    // convex hull link
+    inT = NULL;      // triangle containing this edge
 
-		onHull = false;
-		onMST = false;
-		onShape = false;
-		
+    onHull = false;
+    onMST = false;
+    onShape = false;
+    
         update(p1, p2);
     }
 
-	double getWeight() { return weight; }
+  double getWeight() { return weight; }
 //**************** --anushka -- *******************************
 //commented the following and translated directly from java - makes code 1-2 secs faster on larger data sets (bank, boston)
 /*    bool isEquivalent(Edge e) {
-		if (e == *this) return true;	// same edges
-		// or inverted edge
-		return ((*e.p1 == *p2) && (*e.p2 == *p1));
-	}
+    if (e == *this) return true;  // same edges
+    // or inverted edge
+    return ((*e.p1 == *p2) && (*e.p2 == *p1));
+  }
 
-	bool operator == (Edge e) {
-		if (*p1 != *e.p1) return false;
-		if (*p2 != *e.p2) return false;
+  bool operator == (Edge e) {
+    if (*p1 != *e.p1) return false;
+    if (*p2 != *e.p2) return false;
 
-		return true;
-	}
+    return true;
+  }
 */
 //translated from java
   bool operator==(Edge e) {
@@ -155,11 +155,11 @@ class Edge {
     }
 /*********************************************************/
     
-	bool operator != (Edge e) {
-		return (!(*this == e));
-	}
+  bool operator != (Edge e) {
+    return (!(*this == e));
+  }
 
-	void update(Node *p1, Node *p2) {
+  void update(Node *p1, Node *p2) {
         this->p1 = p1;
         this->p2 = p2;
         a = p2->y - p1->y;
@@ -213,7 +213,7 @@ class Edge {
     }
 
 
-	int getRunts(double *maxLength);
+  int getRunts(double *maxLength);
 
 /*
 
@@ -228,7 +228,7 @@ class Edge {
 */
 
 
-	friend class Triangle;
+  friend class Triangle;
 };
 
 class Triangle {
@@ -241,39 +241,39 @@ public:
     bool onComplex;
     Edge *anEdge;        // an edge of this triangle
     Triangle(Edge *e1, Edge *e2, Edge *e3) {
-		onComplex  = true;
+    onComplex  = true;
 
         update(e1, e2, e3);
     }
 
     Triangle(list<Edge *> *edges, Edge *e1, Edge *e2, Edge *e3) {
-		onComplex  = true;
-		list<Edge *> es = *edges;
+    onComplex  = true;
+    list<Edge *> es = *edges;
         update(e1, e2, e3);
         edges->push_back(e1);
         edges->push_back(e2);
         edges->push_back(e3);
     }
 
-	bool operator == (Triangle t) {
-		Edge *e1 = anEdge;
-		Edge *e2 = e1->nextE;
-		Edge *e3 = e2->nextE;
+  bool operator == (Triangle t) {
+    Edge *e1 = anEdge;
+    Edge *e2 = e1->nextE;
+    Edge *e3 = e2->nextE;
 
-		Edge *te = t.anEdge->nextE;
-		Edge *tee = te->nextE;
-		if (*e1 == *t.anEdge) {
-			return ((*e2 == *te) && (*e3 == *tee));
-		}
-		if (*e2 == *t.anEdge) {
-			return ((*e3 == *te) && (*e1 == *tee));
-		}
-		if (*e3 == *t.anEdge) {
-			return ((*e1 == *te) && (*e2 == *tee));
-		}
+    Edge *te = t.anEdge->nextE;
+    Edge *tee = te->nextE;
+    if (*e1 == *t.anEdge) {
+      return ((*e2 == *te) && (*e3 == *tee));
+    }
+    if (*e2 == *t.anEdge) {
+      return ((*e3 == *te) && (*e1 == *tee));
+    }
+    if (*e3 == *t.anEdge) {
+      return ((*e1 == *te) && (*e2 == *tee));
+    }
 
-		return false;
-	}
+    return false;
+  }
 
     void update(Edge *e1, Edge *e2, Edge *e3);
 
@@ -305,84 +305,84 @@ class Triangulation {
     Node *start, *end;    // for graph diameter calculations
     int totalPeeledCount;
     int totalCount;
-    double alphaArea, alphaPerimeter, hullArea, hullPerimeter;	// initialized in constructor
+    double alphaArea, alphaPerimeter, hullArea, hullPerimeter;  // initialized in constructor
     double totalOriginalMSTLengths;
     double totalMSTOutlierLengths;
     double *sortedOriginalMSTLengths;
 
-	int np;
+  int np;
     int *px, *py, *counts;
     bool *isOutlier;
     static const double FUZZ = .999;
 
     void findOutliers(BinnedData bdata);
-	void computeDT(int *px, int *py);
+  void computeDT(int *px, int *py);
 
-	void updateMSTEdges(Edge *addEdge, list<Edge *> *mstEdges);
-	void updateMSTNodes(Node *addNode, list<Node *> *mstNodes);
-	void computeMST();
-	double *getSortedMSTEdgeLengths();
-	double computeCutoff(int n, double* lengths);
-	void computeTotalOriginalMSTLengths(int n);
-	bool computeMSTOutliers(double omega);
+  void updateMSTEdges(Edge *addEdge, list<Edge *> *mstEdges);
+  void updateMSTNodes(Node *addNode, list<Node *> *mstNodes);
+  void computeMST();
+  double *getSortedMSTEdgeLengths();
+  double computeCutoff(int n, double* lengths);
+  void computeTotalOriginalMSTLengths(int n);
+  bool computeMSTOutliers(double omega);
 
-	double computeAlphaValue();
-	void markShape();
-	void computeAlphaGraph(); // requires initializing Edge.onShape = false
-	bool edgeIsExposed(double alpha, Edge *e);
-	bool pointsInCircle(Node *n, double xc, double yc, double radius);
-	
-	void insert(int px, int py, int count, int id);
+  double computeAlphaValue();
+  void markShape();
+  void computeAlphaGraph(); // requires initializing Edge.onShape = false
+  bool edgeIsExposed(double alpha, Edge *e);
+  bool pointsInCircle(Node *n, double xc, double yc, double radius);
+  
+  void insert(int px, int py, int count, int id);
 
     int searchEdge(Edge *e, Node *nd);
 
-	void expandTri(Edge *e, Node *nd, int type);
-	void swapTest(Edge *e11);
-	void expandHull(Node *nd);
-	void setNeighbors();
-	void markHull();
+  void expandTri(Edge *e, Node *nd, int type);
+  void swapTest(Edge *e11);
+  void expandHull(Node *nd);
+  void setNeighbors();
+  void markHull();
 
-	void computeAlphaArea();
-	void computeHullArea();
-	void computeAlphaPerimeter();
-	void computeHullPerimeter();
+  void computeAlphaArea();
+  void computeHullArea();
+  void computeAlphaPerimeter();
+  void computeHullPerimeter();
     void computeTotalCount() {
-		totalCount = 0;
+    totalCount = 0;
         for (int i = 0; i < np; i++) {
             totalCount += counts[i];
         }
     }
 
-	double *computeMeasures();
-	double computeMSTEdgeLengthSkewnessMeasure();
-	double computeStringyMeasure();
-	double computeClusterMeasure();
-	double computeMonotonicityMeasure();
-	double computePearson(int n, double *x, double *y, double *weights);
-	double computeSparsenessMeasure();
-	double computeStriationMeasure();
-	double computeConvexityMeasure();
-	double computeSkinnyMeasure();
+  double *computeMeasures();
+  double computeMSTEdgeLengthSkewnessMeasure();
+  double computeStringyMeasure();
+  double computeClusterMeasure();
+  double computeMonotonicityMeasure();
+  double computePearson(int n, double *x, double *y, double *weights);
+  double computeSparsenessMeasure();
+  double computeStriationMeasure();
+  double computeConvexityMeasure();
+  double computeSkinnyMeasure();
     double computeOutlierMeasure() {
         return totalMSTOutlierLengths / totalOriginalMSTLengths;
     }
 
 
-	Edge *getAdjacentMSTEdge(Node *n, Edge *e);
-	double cosineOfAdjacentEdges(Edge *e1, Edge *e2, Node *n);
-	void clearVisits();
-	
+  Edge *getAdjacentMSTEdge(Node *n, Edge *e);
+  double cosineOfAdjacentEdges(Edge *e1, Edge *e2, Node *n);
+  void clearVisits();
+  
   public:
     static const int numScagnostics = 9;
     static const int OUTLYING = 0, SKEWED = 1, CLUMPY = 2, SPARSE = 3,
     STRIATED = 4, CONVEX = 5, SKINNY = 6, STRINGY = 7;
-	static const int MONOTONIC = 8;
+  static const int MONOTONIC = 8;
 
-	static const char* scagnosticsLabels[9];
-	
+  static const char* scagnosticsLabels[9];
+  
     Triangulation() {
-		alphaArea = 1, alphaPerimeter = 1, hullArea = 1, hullPerimeter = 1;
-		clear();
+    alphaArea = 1, alphaPerimeter = 1, hullArea = 1, hullPerimeter = 1;
+    clear();
     }
 
     void clear() {
@@ -393,9 +393,9 @@ class Triangulation {
     }
 
     double *compute(BinnedData bdata, bool quick); 
-	
+  
 
-	
+  
 
 /*   
 
@@ -621,23 +621,23 @@ class Triangulation {
     }
 
 */
-	friend class Edge;
-	friend class Node;
-	friend class Triangle;
+  friend class Edge;
+  friend class Node;
+  friend class Triangle;
 };
 
 /*
 ostream& operator << (ostream& os, const Node& p) {
-//	return os << '(' << p.x << ',' << p.y << ',' << p.pointID << ')';
-	return os << p.pointID;
+//  return os << '(' << p.x << ',' << p.y << ',' << p.pointID << ')';
+  return os << p.pointID;
 }
 ostream& operator << (ostream& os, const Edge& e) {
-//	return os << *(e.p1) << "(" << e.p1->x <<","<<e.p1->y << ")-" << *(e.p2) << "(" << e.p2->x <<","<<e.p2->y << ")";
-	return os << *(e.p1) << "-" << *(e.p2);
+//  return os << *(e.p1) << "(" << e.p1->x <<","<<e.p1->y << ")-" << *(e.p2) << "(" << e.p2->x <<","<<e.p2->y << ")";
+  return os << *(e.p1) << "-" << *(e.p2);
 }
 ostream& operator << (ostream& os, const Triangle& t) {
-//	return os << *(t.anEdge) << "-" << *(t.anEdge->nextE) << "-" << *(t.anEdge->nextE->nextE);
-	return os << t.anEdge->p1->pointID << "-" << t.anEdge->nextE->p1->pointID << "-" << t.anEdge->nextE->nextE->p1->pointID;
+//  return os << *(t.anEdge) << "-" << *(t.anEdge->nextE) << "-" << *(t.anEdge->nextE->nextE);
+  return os << t.anEdge->p1->pointID << "-" << t.anEdge->nextE->p1->pointID << "-" << t.anEdge->nextE->nextE->p1->pointID;
 }
 */
 #endif 

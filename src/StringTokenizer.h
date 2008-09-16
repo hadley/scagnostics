@@ -36,20 +36,20 @@ class StringTokenizer
     std::string nextToken();
 
     inline bool hasMoreTokens() {
-	   return (token_str.length() > 0);
-	};
+     return (token_str.length() > 0);
+  };
 
     inline int nextIntToken(){
-   		return atoi(nextToken().c_str());
-	};
+       return atoi(nextToken().c_str());
+  };
 
     inline double nextFloatToken(){
-   		return atof(nextToken().c_str());
-	};
+       return atof(nextToken().c_str());
+  };
 
     inline std::string remainingString(){
-		   return token_str;
-	};
+       return token_str;
+  };
 
     std::string nextToken(const std::string& delim);
     std::string filterNextToken(const std::string& filterStr);

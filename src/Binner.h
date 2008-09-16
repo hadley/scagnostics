@@ -72,9 +72,9 @@ public:
 
   inline void show ()
   {
-		for (int i = 0; i < n; i++) {
-			printf("(%d, %d, %d)\n", x[i], y[i], counts[i]);
-		}
+    for (int i = 0; i < n; i++) {
+      printf("(%d, %d, %d)\n", x[i], y[i], counts[i]);
+    }
   };
 
 };                              //end of class
